@@ -1,0 +1,56 @@
+vi2da
+
+EX: 4
+
+FILES:
+whatsappClient.cpp  -- the whatsapp client implementation
+whatsappServer.cpp  -- the whatsapp client implementation
+whatsappio.h        -- header of the helper library for string processing and printing
+whatsappio.cpp      -- helper library for string processing and printing
+Makefile            -- a makefile for the project
+README              -- this file
+
+REMARKS:
+None
+
+ANSWERS:
+
+Q1:
+a.	in the client side we would add a new command "leave_group" and in the enum object for the 
+	commands we would add the constant LEAVE_GROUP. when parsing the command form the stdin
+	the client checks that this is a legal command with an existing group name etc. and then sends
+	it to the server.
+b.	upon receiving the "leave group" command, the server checks that the client is indeed a member
+	of the group he wants to leave, and if so the server removes him from the specified group.
+	then, the server checks if the group size is less then 2 (or 1) after this removal, and if so deletes
+	the group in the usual way which exists in our implementation.
+
+Q2:
+TCP is a reliable protocol, meaning that the data that is sent is reached by the receiving party, 
+which is not an entity in UDP. Data packets that are lost are resent again, if the connection fails
+then the data is re-requested, thus making sure that data is received at the other end. 
+
+Furthermore, TCP is a connection based protocol, which means that connection must be open between
+two ends before sending data. So both ends know all the things between a session as when the connection
+is closed and when it is opened. this is not the case in UDP when you send the data from one end then we
+cannot know whether data is reaching on the other end or not. As we just hope that it will reach on
+destination.
+
+since in this exercise we want that all messages will reach their destination and we want
+to track the arrival status of the messages (for example in real life whatsapp
+the "double vee" or "blue vee") these advantages make TCP the right option for this task.
+
+Q3:
+two examples are video games and VOIP applications in which we can tolerate some lost packets
+at the advantage of speed and low delay. since UDP is a connection-less protocol, no connection 
+establishment is needed at the beginning of every session and also no extra checks are needed
+for data corruption and order etc. these things make the UDP protocol suffer from less latency 
+and as a result a better "real time" user experice, which is the more important principle in these
+kinds of tasks.
+
+Q4:
+a possible way to do that is to maintin a logfile for each client and the server, which keeps track
+of all history of the program. after the server recovery it can lookup its logfile and compare it 
+against the data in the client logfile to see which messages were sent and recieved by the client
+and which need to be re-sent again.
+
